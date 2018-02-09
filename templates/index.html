@@ -36,48 +36,57 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
   </script>
+  <style>
+      
+  </style>
 </head>
   <body>
-    <a class="twitter-share-button"
-        href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fspotipare.com&text=Find%20songs%20in%20common%20with%20Spotify%20users">
-    Tweet</a>
-    <div class=header>
-        <h1> Spotipare </h1>
-        <h3>Find songs in common with Spotify users</h3>
-    </div>
-  <div>
-        <form class="main-form" method="GET">
-            <div class="user-fields">
-            <input class="user-field" name="usr1" placeholder="Spotify user" oninvalid="this.setCustomValidity('Enter Spotify Username')" oninput="setCustomValidity('')" required>
-            <input class="user-field" name="usr2" placeholder="Spotify user" oninvalid="this.setCustomValidity('Enter Spotify Username')" oninput="setCustomValidity('') "required>
+    <div class="container">
+        <div class="main-content">
+            <a class="twitter-share-button"
+            href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fspotipare.com&text=Find%20songs%20in%20common%20with%20Spotify%20users">
+        Tweet
+            </a>
+            <div class=header>
+                <h1> Spotipare </h1>
+                <h3>Find songs in common with Spotify users</h3>
             </div>
-            <input class="btn-go" type="submit" value="Go">
-        </form>
-  </div>
-
-    {% if users %}
-    <div class="music_msg">
-        {% if result %}
-        <h2>Songs listened to by <span>{{users[0]}}</span> & <span>{{users[1]}}</span></h2>
-        {% else %}
-        <h2><span>{{users[0]}}</span> & <span>{{users[1]}}</span> have no songs in common <span>:(</span></h2>
-        {% endif %}
-    </div>
-    {% endif %}
-
-    {% if result %}
-     <div class="grid-container">
-        {% for item in result %}
-           <div class="grid-item">
-               <img src="{{ item['img'] }}" height="64" width="64">
-               <span class="song_name">{{ item['song_name'] }}</span>
-               <span class="song_artist"> {{ ', '.join(item['artists']) }} </span>
-           </div>
-        {% endfor %}
-     </div>
-     {% endif %}
-     <div class="footer">
-     	Found a bug or want to say something nice? - <a href="mailto:human@spotipare.com" target="_top">human@spotipare.com</a>
-    </div>
+            <div>
+                <form class="main-form" method="GET">
+                    <div class="user-fields">
+                    <input class="user-field" name="usr1" placeholder="Spotify user" oninvalid="this.setCustomValidity('Enter Spotify Username')" oninput="setCustomValidity('')" required>
+                    <input class="user-field" name="usr2" placeholder="Spotify user" oninvalid="this.setCustomValidity('Enter Spotify Username')" oninput="setCustomValidity('') "required>
+                    </div>
+                    <input class="btn-go" type="submit" value="Go">
+                </form>
+            </div>
+        
+            {% if users %}
+            <div class="music_msg">
+                {% if result %}
+                <h2>Songs listened to by <span>{{users[0]}}</span> & <span>{{users[1]}}</span></h2>
+                {% else %}
+                <h2><span>{{users[0]}}</span> & <span>{{users[1]}}</span> have no songs in common <span>:(</span></h2>
+                {% endif %}
+            </div>
+            {% endif %}
+        
+            {% if result %}
+                <div class="grid-container">
+                {% for item in result %}
+                    <div class="grid-item">
+                        <img src="{{ item['img'] }}" height="64" width="64">
+                        <span class="song_name">{{ item['song_name'] }}</span>
+                        <span class="song_artist"> {{ ', '.join(item['artists']) }} </span>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+         <div class="footer">
+             Found a bug or want to say something nice? - <a href="mailto:human@spotipare.com" target="_top">human@spotipare.com</a>
+        </div>
+    </div>  
+    
   </body>
 </html>
