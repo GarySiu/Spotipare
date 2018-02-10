@@ -61,11 +61,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 </form>
             </div>
         
-            {% if users %}
+            {% if users or msg %}
             <div class="music_msg">
                 {% if result %}
                 <h2>Songs listened to by <span>{{users[0]}}</span> & <span>{{users[1]}}</span></h2>
-                {% else %}
+				{% elif msg %}
+				<h2> {{ msg }} </h2>
+				{% else %}
                 <h2><span>{{users[0]}}</span> & <span>{{users[1]}}</span> have no songs in common <span>:(</span></h2>
                 {% endif %}
             </div>

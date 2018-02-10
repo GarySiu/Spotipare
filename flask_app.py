@@ -14,11 +14,8 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
 def get_all_playlist_tracks(user):
-        try:
-            usr_playlists = sp.user_playlists(user)
-        except:
-            #TODO: invalid name exception handling
-            return []
+        usr_playlists = sp.user_playlists(user)
+
         tracks = []
 
         for up in usr_playlists['items']:
@@ -55,8 +52,23 @@ def my_form_query():
     user_1 = request.args.get("usr1")
     user_2 = request.args.get("usr2")
 
-    user_one_tracks = get_all_playlist_tracks(user_1)
-    user_two_tracks = get_all_playlist_tracks(user_2)
+    # Don't want to compare the same user, returns all songs
+    # which can take long to process, also, what's the point?
+    if all((user_1, user_2)) and user_1 == user_2:
+        return render_template('index.html',
+                msg="You should find someone to compare songs with.")
+
+    try:
+        user_one_tracks = get_all_playlist_tracks(user_1)
+        user_two_tracks = get_all_playlist_tracks(user_2)
+    except Exception, e:
+        if "Invalid username" in str(e):
+            return render_template('index.html',
+                    msg="Woops. Invalid Spotify username.")
+        else:
+            return render_template('index.html',
+                    msg="You broke it :(")
+
 
     final_list = find_common_tracks(user_one_tracks, user_two_tracks)
 
