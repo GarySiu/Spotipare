@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request
-from spotipy import spotipy
-from spotipy.spotipy.oauth2 import SpotifyClientCredentials
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
 app = Flask(__name__)
 
@@ -61,7 +61,7 @@ def my_form_query():
     try:
         user_one_tracks = get_all_playlist_tracks(user_1)
         user_two_tracks = get_all_playlist_tracks(user_2)
-    except Exception, e:
+    except Exception as e:
         if "Invalid username" in str(e):
             return render_template('index.html',
                     msg="Woops. Invalid Spotify username.")
