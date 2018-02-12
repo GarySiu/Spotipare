@@ -1,5 +1,4 @@
 *.pyc
 *.swp
 config.py
-spotipy/
-venv/
+__pycache__/
