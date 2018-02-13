@@ -1,19 +1,11 @@
 # Spotipare
 
-Find songs in common with Spotify users
+Find songs in common with Spotify users - [LIVE Spotipare Webapp](https://spotipare.com)
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
-
-What you'll need to get started with development
-
-```
-git
-python3
-```
 
 ### Installing
 
@@ -58,10 +50,6 @@ Coming soon...
 
 Please read [CONTRIBUTING.md](https://github.com/yxorp/Spotipare/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
-
-Coming soon...
-
 ## Authors
 
 * **Ali Hamdan** - *Initial work* - [yxorp](https://github.com/yxorp)
@@ -71,7 +59,3 @@ See also the list of [contributors](https://github.com/yxorp/Spotipare/graphs/co
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-Coming soon...
