@@ -52,7 +52,6 @@ body {
   background-color: #FEFFFE;
   padding: .9em 1.8em;
   border: none;
-  cursor: pointer;
   outline: none;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -133,14 +132,6 @@ form textarea::-webkit-validation-bubble-message {
   display: none;
 }
 
-input {
-  color: transparent;
-  text-shadow: 0 0 0 #000100;
-  &:focus {
-      outline: none;
-  }
-}
-
 .footer {
   padding: 1rem;
   text-align: center;
@@ -150,6 +141,16 @@ input {
 .footer a {
   color: #23CF5F;
   text-decoration: none;
+}
+
+.usr-help { 
+  text-decoration: none;
+  color: #23CF5F;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;    
 }
 
 @media only screen and (min-device-width:320px) and (max-device-width:480px) and (-webkit-min-device-pixel-ratio:2) and (orientation:portrait) {
@@ -177,5 +178,8 @@ input {
   }
   .user-fields input:nth-child(2) {
       margin-top: 10px;
+  }
+  .usr-help {
+	  font-size:10px;
   }
 }
