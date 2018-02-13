@@ -145,6 +145,7 @@ form textarea::-webkit-validation-bubble-message {
 
 .usr-help { 
   text-decoration: none;
+  font-size:13px;
   color: #23CF5F;
 }
 
