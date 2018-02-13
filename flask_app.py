@@ -9,74 +9,93 @@ app = Flask(__name__)
 C_ID = os.environ.get('C_ID')
 C_SECRET = os.environ.get('C_SECRET')
 
+# Setting up spotipy client
 client_credentials_manager = SpotifyClientCredentials(client_id=C_ID, client_secret=C_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
 def get_all_playlist_tracks(user):
-        usr_playlists = sp.user_playlists(user)
+	""" Returns tracks found in user's playlists.
+		Limited to 50 playlists in spotipy user_playlists """
+	#TODO: increase maximum playlists fetched from 50 to 100?
+	usr_playlists = sp.user_playlists(user)
 
-        tracks = []
+	tracks = []
 
-        for up in usr_playlists['items']:
-            try:
-                tks = sp.user_playlist_tracks(user, playlist_id=up['id'])
-                for track in tks['items']:
-                        tracks.append({ 'song_name' : track['track']['name'],
-                                                        'img' : track['track']['album']['images'][1]['url'],
-                                                        'artists' : [ dic['name'] for dic in track['track']['artists'] ]})
-            except:
-                    pass
+	for pl in usr_playlists['items']:
+		try:
+			pl_tracks = sp.user_playlist_tracks(user, playlist_id=pl['id'])
+			for track in pl_tracks['items']:
+				tracks.append({ 'song_name' : track['track']['name'],
+								'img' : track['track']['album']['images'][1]['url'],
+								'artists' : [ dic['name'] for dic in track['track']['artists']] })
+		#TODO: specific exception for no playlists found 
+		# exception occurs when user has no playlists, if so,
+		# we pass and an empty list is returned
+		except:
+			pass
 
-        return tracks
+	return tracks
 
 
-def find_common_tracks(tr1, tr2):
-        """ params: a list of tracks """
-        # Finding the smaller list of the two for optimization
-        s_list = sorted([tr1, tr2], key=len)
+def find_common_tracks(tracklist_one, tracklist_two):
+	""" Returns intersection of track lists """		
+	#TODO: add artist to track names or better identification
+	#	   for a more accurate comparison between track lists.
+	#	   Currently we are using only song name for comparison 
+	#	   which can match songs by different artists with the 
+	#	   same name. 
+	
+	# Finding the smaller list of the two for optimization
+	smaller_list = sorted([tracklist_one, tracklist_two], key=len)
+	# Create list of track names found in list
+	sl_track_names = [item['song_name'] for item in smaller_list[0]]
 
-        track_names = [item['song_name'] for item in s_list[0]]
+	tracks = []
 
-        tracks = []
-
-        for item in s_list[1]:
-                if item['song_name'] in track_names:
-                        tracks.append(item)
-
-        return list({v['song_name']:v for v in tracks}.values())
+	for item in smaller_list[1]:
+		if item['song_name'] in sl_track_names:
+			tracks.append(item)
+	
+	# Return list of unique dictionaries 
+	# see: https://stackoverflow.com/a/11092590
+	return list({v['song_name']:v for v in tracks}.values())
 
 
 @app.route('/', methods=['GET'])
 def my_form_query():
-    user_1 = request.args.get("usr1")
-    user_2 = request.args.get("usr2")
+	user_1 = request.args.get("usr1")
+	user_2 = request.args.get("usr2")
 
-    # Don't want to compare the same user, returns all songs
-    # which can take long to process, also, what's the point?
-    if all((user_1, user_2)) and user_1 == user_2:
-        return render_template('index.html',
-                msg="You should find someone to compare songs with.")
+	# Will only continue if two users are passed in
+	if all((user_1, user_2)):
+		# Not comparing two of the same username
+		if user_1 == user_2:
+			return render_template('index.html',
+				msg="You should find someone to compare songs with.")
+		
+		# We try because a username may be incorrect
+		# or we encounter an error that we do not yet know
+		try:
+			user_one_tracks = get_all_playlist_tracks(user_1)
+			user_two_tracks = get_all_playlist_tracks(user_2)
+		#TODO: add specific exception for invalid user
+		except Exception as e:
+			if "Invalid username" in str(e):
+				return render_template('index.html',
+						msg="Woops. Invalid Spotify username.")
+			else:
+				return render_template('index.html',
+						msg="You broke it :(")
 
-    try:
-        user_one_tracks = get_all_playlist_tracks(user_1)
-        user_two_tracks = get_all_playlist_tracks(user_2)
-    except Exception as e:
-        if "Invalid username" in str(e):
-            return render_template('index.html',
-                    msg="Woops. Invalid Spotify username.")
-        else:
-            return render_template('index.html',
-                    msg="You broke it :(")
+		# Songs in common between both users
+		final_list = find_common_tracks(user_one_tracks, user_two_tracks)
+		# Returning result page	
+		return render_template("index.html", result=final_list, users=(user_1, user_2))
 
-
-    final_list = find_common_tracks(user_one_tracks, user_two_tracks)
-
-    if all((user_1, user_2)):
-        return render_template("index.html", result=final_list, users=(user_1, user_2))
-
-    return render_template('index.html')
+	# Returning main page	
+	return render_template('index.html')
 
 
 if __name__ == "__main__":
-    app.run('127.0.0.1')
+	app.run('127.0.0.1')
