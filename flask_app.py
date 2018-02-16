@@ -14,6 +14,11 @@ client_credentials_manager = SpotifyClientCredentials(client_id=C_ID, client_sec
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
+def parse_url(url):
+	""" Returns username from url """
+	return url.split('/')[-1].split('?')[0]
+
+
 def get_all_playlist_tracks(user):
 	""" Returns tracks found in user's playlists.
 		Limited to 50 playlists in spotipy user_playlists """
@@ -73,7 +78,16 @@ def my_form_query():
 		if user_1 == user_2:
 			return render_template('index.html',
 				msg="You should find someone to compare songs with.")
-		
+	
+
+		# Parsing if url passed in
+		#TODO: Clean this up
+		if user_1.startswith('http'):
+			user_1 = parse_url(user_1)
+		if user_2.startswith('http'):
+			user_2 = parse_url(user_2)
+
+	
 		# We try because a username may be incorrect
 		# or we encounter an error that we do not yet know
 		try:
