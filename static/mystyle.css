@@ -18,7 +18,7 @@ body {
 }
 
 .header h1 {
-  font-size: 55px;
+  font-size: 3rem;
   margin-top: 0px;
   margin-bottom: 0px;
   color: #23CF5F;
@@ -56,6 +56,7 @@ body {
   margin: 0 0.5em;
   border: 0;
   border-bottom: green solid 2px;
+  border-radius: 0;
   outline: 0;
   -webkit-transition: all .1s linear;
   -moz-transition: all .1s linear;
@@ -81,6 +82,8 @@ body {
   -webkit-transition: all .5s;
   -moz-transition: all .5s;
   transition: all .5s;
+  -webkit-appearance: none;
+  border-radius: 0;
 }
 
 .btn-go:hover {
