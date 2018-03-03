@@ -24,11 +24,15 @@ Create virtual Python enviroment and activate it
 $ python3 -m venv venv && source venv/bin/activate
 ```
 
-Install Spoipare dependencies
+Install Spotipare dependencies
 
 ```sh
 $ python -m pip install -r requirements.txt
 ```
+
+Get your credentials from Spotify by [creating a new app](https://developer.spotify.com/my-applications).
+
+Add the client_id and client_secret to a .env file. A sample has been provided named *sample.env*. Just replace the placeholders save the file as `.env`.
 
 Start the Spotipare server locally
 
