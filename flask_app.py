@@ -3,6 +3,9 @@ from flask import Flask, render_template, request
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+
 app = Flask(__name__)
 
 # Get sensitive information from enviroment variables
